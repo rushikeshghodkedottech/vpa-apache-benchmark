@@ -45,6 +45,14 @@ kubectl wait --for=condition=available --timeout=300s deployment/metrics-server 
 
 #################################################################################################################################
 
+#Install VPA
+git clone https://github.com/kubernetes/autoscaler.git
+cd autoscaler/vertical-pod-autoscaler
+./hack/vpa-up.sh
+cd ../../
+
+#################################################################################################################################
+
 #Deploy Application
 # Apply all Kubernetes manifests
 kubectl apply -f namespace.yaml
@@ -121,10 +129,10 @@ kubectl get vpa,pods,svc -n apache
 #################################################################################################################################
 
 # Cleanup
+# Delete just the namespace
+kubectl delete namespace apache
+
 # Delete the entire cluster
 kind delete cluster --name=apache-test
-
-# Or delete just the namespace
-kubectl delete namespace apache
 
 #################################################################################################################################
